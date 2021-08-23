@@ -20,17 +20,11 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
 end)
 
 AddEventHandler('esx:onPlayerLogout', function(playerId)
-  local xPlayer = ESX.GetPlayerFromId(source)
-	if(xPlayer ~= nil) then
-		TriggerClientEvent('esx_healthnarmour:save', playerId)
-	end
+  UpdateHealthNArmour(source, playerId)
 end)
 
 AddEventHandler('esx:playerDropped', function(playerId)
-  local xPlayer = ESX.GetPlayerFromId(source)
-	if(xPlayer ~= nil) then
-		TriggerClientEvent('esx_healthnarmour:save', playerId)
-	end
+  UpdateHealthNArmour(source, playerId)
 end)
 
 AddEventHandler('esx_healthnarmour:update', function(health, armour)
@@ -45,3 +39,10 @@ AddEventHandler('esx_healthnarmour:update', function(health, armour)
     )
   end
 end)
+
+local UpdateHealthNArmour = function(source, playerId)
+  local xPlayer = ESX.GetPlayerFromId(source)
+	if(xPlayer ~= nil) then
+		TriggerClientEvent('esx_healthnarmour:save', playerId)
+	end
+end
