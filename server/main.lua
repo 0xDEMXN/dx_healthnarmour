@@ -7,13 +7,6 @@ Citizen.CreateThread(function()
   MySQL.Async.store("UPDATE `users` SET `health` = ?, `armour` = ? WHERE `identifier` = ?", function(storeId) UpdateHealthNArmour = storeId end)
 end)
 
-local UpdateHealthNArmour = function(source, playerId)
-  local xPlayer = ESX.GetPlayerFromId(source)
-	if(xPlayer ~= nil) then
-		TriggerClientEvent('esx_healthnarmour:save', playerId)
-	end
-end
-
 AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
   ESX.PlayerData = xPlayer
   MySQL.Async.fetchAll(LoadHealthNArmour, { 
@@ -24,14 +17,6 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
         TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
       end
   end)
-end)
-
-AddEventHandler('esx:onPlayerLogout', function(playerId)
-  UpdateHealthNArmour(source, playerId)
-end)
-
-AddEventHandler('esx:playerDropped', function(playerId)
-  UpdateHealthNArmour(source, playerId)
 end)
 
 RegisterNetEvent('esx_healthnarmour:update')
@@ -46,4 +31,11 @@ AddEventHandler('esx_healthnarmour:update', function(health, armour)
       }
     )
   end
+end)
+
+AddEventHandler('esx:playerDropped', function(playerId)
+  local xPlayer = ESX.GetPlayerFromId(source)
+	if(xPlayer ~= nil) then
+		TriggerClientEvent('esx_healthnarmour:save', playerId)
+	end
 end)
