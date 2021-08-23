@@ -19,7 +19,20 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
   end)
 end)
 
-RegisterNetEvent('esx_healthnarmour:update')
+AddEventHandler('esx:onPlayerLogout', function(playerId)
+  local xPlayer = ESX.GetPlayerFromId(source)
+	if(xPlayer ~= nil) then
+		TriggerClientEvent('esx_healthnarmour:save', playerId)
+	end
+end)
+
+AddEventHandler('esx:playerDropped', function(playerId)
+  local xPlayer = ESX.GetPlayerFromId(source)
+	if(xPlayer ~= nil) then
+		TriggerClientEvent('esx_healthnarmour:save', playerId)
+	end
+end)
+
 AddEventHandler('esx_healthnarmour:update', function(health, armour)
   local xPlayer = ESX.GetPlayerFromId(source)
   if(xPlayer ~= nil) then
