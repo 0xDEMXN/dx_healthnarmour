@@ -27,7 +27,7 @@ AddEventHandler('esx:playerDropped', function(playerId)
   UpdateHealthNArmour(source, playerId)
 end)
 
-RegisterNetEvent('esx_healthnarmour:update') -- needed?
+RegisterNetEvent('esx_healthnarmour:update')
 AddEventHandler('esx_healthnarmour:update', function(health, armour)
   local xPlayer = ESX.GetPlayerFromId(source)
   if(xPlayer ~= nil) then
