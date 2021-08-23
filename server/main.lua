@@ -32,10 +32,3 @@ AddEventHandler('esx_healthnarmour:update', function(health, armour)
     )
   end
 end)
-
-AddEventHandler('esx:playerDropped', function(playerId)
-  local xPlayer = ESX.GetPlayerFromId(source)
-	if(xPlayer ~= nil) then
-		TriggerClientEvent('esx_healthnarmour:save', playerId)
-	end
-end)
