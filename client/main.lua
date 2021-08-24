@@ -11,8 +11,10 @@ end)
 RegisterNetEvent('esx_healthnarmour:set')
 AddEventHandler('esx_healthnarmour:set', function(health, armour)
   local playerPed = PlayerPedId()
-  SetEntityHealth(playerPed, health)
-  SetPedArmour(playerPed, armour)
+  if not HealthNArmour then
+    SetEntityHealth(playerPed, health)
+    SetPedArmour(playerPed, armour)
+  end
   HealthNArmour = true
 end)
 
