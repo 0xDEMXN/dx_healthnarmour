@@ -7,13 +7,15 @@ Citizen.CreateThread(function()
   MySQL.Async.store("UPDATE `users` SET `health` = ?, `armour` = ? WHERE `identifier` = ?", function(storeId) UpdateHealthNArmour = storeId end)
 end)
 
-AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
+RegisterNetEvent('esx:onPlayerSpawn')
+AddEventHandler('esx:onPlayerSpawn', function()
+  local playerId = source
+  local xPlayer = ESX.GetPlayerFromId(playerId)
   ESX.PlayerData = xPlayer
   MySQL.Async.fetchAll(LoadHealthNArmour, { 
     ESX.PlayerData.identifier
     }, function(data)
-      if (data[1].health ~= nil) then
-        Citizen.Wait(1000)
+      if data[1].health ~= nil then
         TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
       end
   end)
@@ -21,13 +23,11 @@ end)
 
 RegisterNetEvent('esx_healthnarmour:update')
 AddEventHandler('esx_healthnarmour:update', function(health, armour)
-  local xPlayer = ESX.GetPlayerFromId(source)
-  if(xPlayer ~= nil) then
-    MySQL.Async.execute(UpdateHealthNArmour,
-      { 
+  if ESX.PlayerData.identifier ~= nil then
+    MySQL.Async.execute(UpdateHealthNArmour, { 
         health,
         armour,
-        xPlayer.identifier
+        ESX.PlayerData.identifier
       }
     )
   end

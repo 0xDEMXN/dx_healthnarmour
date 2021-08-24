@@ -1,16 +1,11 @@
-local HealthNArmour = function()
-  Citizen.CreateThread(function()
-    while true do
+HealthNArmour = nil
+
+SetInterval(1, 0, function()
+  if HealthNArmour then
       local playerPed = PlayerPedId()
       TriggerServerEvent('esx_healthnarmour:update', GetEntityHealth(playerPed), GetPedArmour(playerPed))
-      Citizen.Wait(1000)
-    end
-  end)
-end
-
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
-  HealthNArmour();
+      SetInterval(1, 1000)
+  else SetInterval(1, 10000) end
 end)
 
 RegisterNetEvent('esx_healthnarmour:set')
@@ -18,4 +13,10 @@ AddEventHandler('esx_healthnarmour:set', function(health, armour)
   local playerPed = PlayerPedId()
   SetEntityHealth(playerPed, health)
   SetPedArmour(playerPed, armour)
+  HealthNArmour = true
+end)
+
+RegisterNetEvent('esx:onPlayerLogout')
+AddEventHandler('esx:onPlayerLogout', function()
+  HealthNArmour = false
 end)
