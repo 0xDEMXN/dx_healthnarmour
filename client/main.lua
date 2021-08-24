@@ -1,8 +1,8 @@
 HealthNArmour = nil
 
 Citizen.CreateThread(function()
-  local sleep = 10000
   while true do
+    local sleep = 10000
     if HealthNArmour then
       local playerPed = PlayerPedId()
       TriggerServerEvent('esx_healthnarmour:update', GetEntityHealth(playerPed), GetPedArmour(playerPed))
