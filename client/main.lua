@@ -1,11 +1,15 @@
 HealthNArmour = nil
 
-SetInterval(1, 0, function()
-  if HealthNArmour then
+Citizen.CreateThread(function()
+  local sleep = 10000
+  while true do
+    if HealthNArmour then
       local playerPed = PlayerPedId()
       TriggerServerEvent('esx_healthnarmour:update', GetEntityHealth(playerPed), GetPedArmour(playerPed))
-      SetInterval(1, 1000)
-  else SetInterval(1, 10000) end
+      sleep = 1000
+    end
+    Citizen.Wait(sleep)
+  end
 end)
 
 RegisterNetEvent('esx_healthnarmour:set')
