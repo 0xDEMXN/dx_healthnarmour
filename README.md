@@ -17,7 +17,7 @@ git clone https://github.com/d3rp-jsx/esx_healthnarmour.git
 
 ### Manually
 
-- Go to the [releases page](https://github.com/derp-jsx/esx_healthnarmour/releases "Releases page") and download the latest release
+- Go to the [releases page](https://github.com/d3rp-jsx/esx_healthnarmour/releases "Releases page") and download the latest release
 - Place it in the `resources/[esx]` directory
 
 ### Installation
