@@ -12,6 +12,11 @@ Citizen.CreateThread(function()
   end
 end)
 
+AddEventHandler('esx:onPlayerSpawn', function()
+  Citizen.Wait(5000)
+  HealthNArmour = true
+end)
+
 RegisterNetEvent('esx_healthnarmour:set')
 AddEventHandler('esx_healthnarmour:set', function(health, armour)
   local playerPed = PlayerPedId()
@@ -19,7 +24,6 @@ AddEventHandler('esx_healthnarmour:set', function(health, armour)
     SetEntityHealth(playerPed, health)
     SetPedArmour(playerPed, armour)
   end
-  HealthNArmour = true
 end)
 
 RegisterNetEvent('esx:onPlayerLogout')
