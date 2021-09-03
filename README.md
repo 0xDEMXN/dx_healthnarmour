@@ -1,4 +1,4 @@
-# esx_healthnarmour - Store health and armour into your database (Removed armour)
+# esx_healthnarmour - Store health into your database (Removed armour)
 
 ## Requirements
 
