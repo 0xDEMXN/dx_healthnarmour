@@ -16,10 +16,11 @@ AddEventHandler('esx:onPlayerSpawn', function() -- load
     end
 end)
 
+
 AddEventHandler('esx:playerDropped', function(playerId, reason) -- update
-	local xPlayer = ESX.GetPlayerFromId(playerId)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
     if xPlayer ~= nil then
         local health = GetEntityHealth(GetPlayerPed(xPlayer.source))
         MySQL.Async.execute(UpdateHealthQuery, {health, xPlayer.identifier})
-	  end
+    end
 end)
