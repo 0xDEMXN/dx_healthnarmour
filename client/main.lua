@@ -1,10 +1,11 @@
-local applied = nil
+HealthNArmour = nil
 
-RegisterNetEvent('sv_player:setHealth')
-AddEventHandler('sv_player:setHealth', function(health)
+RegisterNetEvent('esx_healthnarmour:set')
+AddEventHandler('esx_healthnarmour:set', function(health, armour)
     local playerPed = PlayerPedId()
-    if not applied then
-        applied = true
+    if not HealthNArmour then
+        HealthNArmour = true
         SetEntityHealth(playerPed, health)
+        SetPedArmour(playerPed, armour)
     end
 end)
