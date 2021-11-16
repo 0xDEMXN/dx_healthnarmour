@@ -17,6 +17,16 @@ AddEventHandler('esx:onPlayerSpawn', function()
   end
 end)
 
+RegisterNetEvent('esx:onPlayerDeath')
+AddEventHandler('esx:onPlayerDeath', function()
+    local playerId = source
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+
+    if xPlayer ~= nil then
+        MySQL.Sync.execute(UpdateHealthNArmour, {200, 0, xPlayer.identifier})
+    end
+end)
+
 AddEventHandler('esx:playerDropped', function(playerId, reason)
   local xPlayer = ESX.GetPlayerFromId(playerId)
   
