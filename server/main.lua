@@ -1,4 +1,5 @@
 MySQL.ready(function()
+  MySQL.Async.store('SELECT `is_dead` FROM `users` WHERE `identifier` = ?', function(storeId) GetDeathStatus = storeId end)
   MySQL.Async.store('SELECT `health`, `armour` FROM `users` WHERE `identifier` = ?', function(storeId) LoadHealthNArmour = storeId end)
   MySQL.Async.store("UPDATE `users` SET `health` = ?, `armour` = ? WHERE `identifier` = ?", function(storeId) UpdateHealthNArmour = storeId end)
 end)
@@ -9,9 +10,15 @@ AddEventHandler('esx:onPlayerSpawn', function()
   local xPlayer = ESX.GetPlayerFromId(playerId)
 
   if xPlayer ~= nil then
-    MySQL.Async.fetchAll(LoadHealthNArmour, {xPlayer.identifier}, function(data)
-      if data[1].health ~= nil and data[1].armour ~= nil then
-        TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
+    MySQL.Async.fetchScalar(GetDeathStatus, {xPlayer.identifier}, function(isDead)
+      if isDead then 
+        TriggerClientEvent('esx_healthnarmour:set', playerId, 0, 0)
+      else 
+        MySQL.Async.fetchAll(LoadHealthNArmour, {xPlayer.identifier}, function(data)
+          if data[1].health ~= nil and data[1].armour ~= nil then
+            TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
+          end
+        end)
       end
     end)
   end
@@ -23,7 +30,7 @@ AddEventHandler('esx:onPlayerDeath', function()
     local xPlayer = ESX.GetPlayerFromId(playerId)
 
     if xPlayer ~= nil then
-        MySQL.Sync.execute(UpdateHealthNArmour, {200, 0, xPlayer.identifier})
+        MySQL.Sync.execute(UpdateHealthNArmour, {GetEntityMaxHealth(GetPlayerPed(xPlayer.source)), 0, xPlayer.identifier})
     end
 end)
 

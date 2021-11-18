@@ -13,3 +13,8 @@ server_scripts {
   '@mysql-async/lib/MySQL.lua',
   'server/main.lua'
 }
+
+dependencies {
+  'es_extended',
+  'esx_ambulancejob'
+}
