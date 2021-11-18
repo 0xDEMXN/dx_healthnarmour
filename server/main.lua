@@ -11,9 +11,7 @@ AddEventHandler('esx:onPlayerSpawn', function()
 
   if xPlayer ~= nil then
     MySQL.Async.fetchScalar(GetDeathStatus, {xPlayer.identifier}, function(isDead)
-      if isDead then 
-        TriggerClientEvent('esx_healthnarmour:set', playerId, 0, 0)
-      else 
+      if not isDead then 
         MySQL.Async.fetchAll(LoadHealthNArmour, {xPlayer.identifier}, function(data)
           if data[1].health ~= nil and data[1].armour ~= nil then
             TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
