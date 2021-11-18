@@ -3,7 +3,8 @@
 ## Requirements
 
 - [mysql-async](https://github.com/brouznouf/fivem-mysql-async)
-- [es_extended](https://github.com/esx-framework/es_extended/tree/legacy) (Legacy)
+- [es_extended](https://github.com/esx-framework/esx-legacy/tree/main/%5Besx%5D/es_extended) (Legacy)
+- [esx_ambulancejob](https://github.com/esx-framework/esx-legacy/tree/main/%5Besx_addons%5D/esx_ambulancejob)
 
 ## Download & Installation
 

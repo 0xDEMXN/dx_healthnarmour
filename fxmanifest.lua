@@ -15,6 +15,7 @@ server_scripts {
 }
 
 dependencies {
+  'mysql-async',
   'es_extended',
   'esx_ambulancejob'
 }
