@@ -3,19 +3,18 @@ game 'gta5'
 
 author 'd3rp-jsx'
 description 'Store health and armour into your database'
-version '1.0.3'
+version '1.0.4'
 
 shared_script '@es_extended/imports.lua'
 
 client_script 'client/main.lua'
 
 server_scripts {
-  '@mysql-async/lib/MySQL.lua',
+  '@oxmysql/lib/MySQL.lua',
   'server/main.lua'
 }
 
 dependencies {
-  'mysql-async',
-  'es_extended',
-  'esx_ambulancejob'
+  'oxmysql',
+  'es_extended'
 }

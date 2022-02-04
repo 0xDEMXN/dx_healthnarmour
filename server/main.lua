@@ -1,25 +1,34 @@
-MySQL.ready(function()
-  MySQL.Async.store('SELECT `is_dead` FROM `users` WHERE `identifier` = ?', function(storeId) GetDeathStatus = storeId end)
-  MySQL.Async.store('SELECT `health`, `armour` FROM `users` WHERE `identifier` = ?', function(storeId) LoadHealthNArmour = storeId end)
-  MySQL.Async.store("UPDATE `users` SET `health` = ?, `armour` = ? WHERE `identifier` = ?", function(storeId) UpdateHealthNArmour = storeId end)
-end)
+local LoadHealthNArmour = 'SELECT `health`, `armour` FROM `users` WHERE `identifier` = ?'
+local UpdateHealthNArmour = 'UPDATE `users` SET `health` = ?, `armour` = ? WHERE `identifier` = ?'
 
 RegisterNetEvent('esx:onPlayerSpawn')
 AddEventHandler('esx:onPlayerSpawn', function()
-  local playerId = source
-  local xPlayer = ESX.GetPlayerFromId(playerId)
+  local xPlayer = ESX.GetPlayerFromId(source)
 
   if xPlayer ~= nil then
-    MySQL.Async.fetchScalar(GetDeathStatus, {xPlayer.identifier}, function(isDead)
-      if not isDead then 
-        MySQL.Async.fetchAll(LoadHealthNArmour, {xPlayer.identifier}, function(data)
-          if data[1].health ~= nil and data[1].armour ~= nil then
-            TriggerClientEvent('esx_healthnarmour:set', playerId, data[1].health, data[1].armour)
-          end
-        end)
+    MySQL.query(LoadHealthNArmour, {
+      xPlayer.identifier
+    }, function(data)
+      local playerStats = data[1]
+
+      if playerStats.health ~= nil and playerStats.armour ~= nil then
+        TriggerClientEvent('esx_healthnarmour:set', xPlayer.source, playerStats.health, playerStats.armour)
       end
     end)
   end
+end)
+
+RegisterNetEvent('esx:onPlayerDeath')
+AddEventHandler('esx:onPlayerDeath', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+
+    if xPlayer ~= nil then
+        MySQL.update.await(UpdateHealthNArmour, {
+          GetEntityMaxHealth(GetPlayerPed(xPlayer.source)),
+          0, 
+          xPlayer.identifier
+        })
+    end
 end)
 
 AddEventHandler('esx:playerDropped', function(playerId, reason)
@@ -28,6 +37,11 @@ AddEventHandler('esx:playerDropped', function(playerId, reason)
   if xPlayer ~= nil then
     local health = GetEntityHealth(GetPlayerPed(xPlayer.source))
     local armour = GetPedArmour(GetPlayerPed(xPlayer.source))
-    MySQL.Sync.execute(UpdateHealthNArmour, {health, armour, xPlayer.identifier})
+
+    MySQL.update.await(UpdateHealthNArmour, {
+      health, 
+      armour, 
+      xPlayer.identifier
+    })
   end
 end)
